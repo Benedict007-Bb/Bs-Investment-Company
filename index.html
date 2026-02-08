@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BS Investment | Start Small, Dream Big</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --dark: #0f172a;
+      --orange: #ff4d1a;
+      --light: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: var(--dark);
+      color: white;
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #020617;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      color: var(--orange);
+      font-size: 22px;
+    }
+
+    header button {
+      background: var(--orange);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    section {
+      padding: 60px 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .hero {
+      display: grid;
+      gap: 40px;
+    }
+
+    .hero h2 {
+      font-size: 38px;
+    }
+
+    .hero p {
+      color: #cbd5f5;
+      font-size: 18px;
+    }
+
+    .bullets li {
+      margin: 10px 0;
+    }
+
+    .cta {
+      margin-top: 25px;
+    }
+
+    .cta button {
+      background: var(--orange);
+      color: white;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: #020617;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      transition: transform .3s;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+    }
+
+    .card h3 {
+      color: var(--orange);
+      margin-bottom: 10px;
+    }
+
+    .login-box {
+      background: white;
+      color: black;
+      max-width: 400px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 15px;
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background: var(--orange);
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .note {
+      text-align: center;
+      font-size: 13px;
+      margin-top: 15px;
+      color: #555;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      background: #020617;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>BS Investment</h1>
+  <button onclick="scrollToLogin()">Login</button>
+</header>
+
+<section class="hero">
+  <div>
+    <h2>Start small, <br> dream big</h2>
+    <p>
+      Limited risk, unlimited potential.  
+      Trade confidently with a beginner-friendly investment platform designed to help you grow.
+    </p>
+
+    <ul class="bullets">
+      <li>✔ Beginner-friendly platform</li>
+      <li>✔ Small minimum deposit</li>
+      <li>✔ Secure & transparent system</li>
+      <li>✔ Designed for long-term growth</li>
+    </ul>
+
+    <div class="cta">
+      <button onclick="scrollToLogin()">Register in 5 minutes</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="cards">
+    <div class="card">
+      <h3>Small Deposit</h3>
+      <p>Start investing with as little capital and grow steadily.</p>
+    </div>
+    <div class="card">
+      <h3>Low Risk</h3>
+      <p>Smart risk control designed for beginners.</p>
+    </div>
+    <div class="card">
+      <h3>Beginner Friendly</h3>
+      <p>Clean interface and easy tools to guide your journey.</p>
+    </div>
+  </div>
+</section>
+
+<section id="login">
+  <div class="login-box">
+    <h2>Account Login</h2>
+
+    <input type="email" id="email" placeholder="Email address">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <div class="note">
+      Demo Login: <br>
+      <b>demo@invest.com</b> / <b>demo123</b>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 BS Investment. All rights reserved. <br>
+  Trading involves risk.
+</footer>
+
+<script>
+  // default demo account
+  if (!localStorage.getItem("users")) {
+    localStorage.setItem("users", JSON.stringify({
+      "demo@invest.com": {
+        password: "demo123",
+        balance: 500,
+        profit: 120
+      }
+    }));
+  }
+
+  function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const users = JSON.parse(localStorage.getItem("users"));
+
+    if (!email || !password) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    if (users[email] && users[email].password === password) {
+      localStorage.setItem("currentUser", email);
+      alert("Login successful! Redirecting to dashboard...");
+      window.location.href = "dashboard.html";
+    } else {
+      alert("Invalid email or password");
+    }
+  }
+
+  function scrollToLogin() {
+    document.getElementById("login").scrollIntoView({ behavior: "smooth" });
+  }
+</script>
+
+</body>
+</html>

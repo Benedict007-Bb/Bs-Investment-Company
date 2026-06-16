@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BS Investment Group - Register</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#081428;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    background:white;
+    width:350px;
+    padding:20px;
+    border-radius:10px;
+}
+
+h2{
+    text-align:center;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#d35400;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Create Account</h2>
+
+    <input type="text" id="fullName" placeholder="Full Name">
+    <input type="text" id="username" placeholder="Username">
+    <input type="email" id="email" placeholder="Email Address">
+    <input type="text" id="phone" placeholder="Phone Number">
+    <input type="text" id="country" placeholder="Country">
+    <input type="password" id="password" placeholder="Password">
+    <input type="password" id="confirmPassword" placeholder="Confirm Password">
+
+    <button onclick="registerUser()">Create Account</button>
+
+    <p style="text-align:center;">
+        <a href="index.html">Login</a>
+    </p>
+</div>
+
+<script>
+const supabase = window.supabase.createClient(
+    "YOUR_SUPABASE_URL",
+    "YOUR_SUPABASE_ANON_KEY"
+);
+
+async function registerUser(){
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const username = document.getElementById("username").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const country = document.getElementById("country").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if(
+        !fullName ||
+        !username ||
+        !email ||
+        !phone ||
+        !country ||
+        !password ||
+        !confirmPassword
+    ){
+        alert("Please fill all fields");
+        return;
+    }
+
+    if(password !== confirmPassword){
+        alert("Passwords do not match");
+        return;
+    }
+
+    const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password
+    });
+
+    if(error){
+        alert(error.message);
+        return;
+    }
+
+    alert("Account created successfully!");
+
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

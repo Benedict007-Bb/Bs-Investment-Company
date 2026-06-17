@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BS Investment Group - Register</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#081428;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+}
+
+.container{
+    background:#fff;
+    width:350px;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.3);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#d35400;
+    color:#fff;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#b94800;
+}
+
+p{
+    text-align:center;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h2>Create Account</h2>
+
+<input type="text" id="fullName" placeholder="Full Name">
+<input type="text" id="username" placeholder="Username">
+<input type="email" id="email" placeholder="Email Address">
+<input type="text" id="phone" placeholder="Phone Number">
+<input type="text" id="country" placeholder="Country">
+<input type="password" id="password" placeholder="Password">
+<input type="password" id="confirmPassword" placeholder="Confirm Password">
+
+<button type="button" onclick="registerUser()">Create Account</button>
+
+<p>
+<a href="index.html">Already have an account? Login</a>
+</p>
+
+</div>
+
+<script>
+
+const supabase = window.supabase.createClient(
+    "https://plufvijgvrarlkaqccdk.supabase.co ",
+    "sb_publishable_h8EG8EtTh-zm28mycHVriA_6AmOrMr5 "
+);
+
+async function registerUser(){
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const username = document.getElementById("username").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const country = document.getElementById("country").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if(!fullName || !username || !email || !phone || !country || !password || !confirmPassword){
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    if(password !== confirmPassword){
+        alert("Passwords do not match.");
+        return;
+    }
+
+    try{
+
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password
+        });
+
+        if(error){
+            alert(error.message);
+            return;
+        }
+
+        const userId = data.user ? data.user.id : null;
+
+        const { error: insertError } = await supabase
+        .from("investmentcompany")
+        .insert([
+            {
+                user_id: userId,
+                full_name: fullName,
+                username: username,
+                email: email,
+                phone: phone,
+                country: country,
+                balance: 0,
+                profit: "0",
+                active_investment: 0
+            }
+        ]);
+
+        if(insertError){
+            alert(insertError.message);
+            return;
+        }
+
+        alert("Account created successfully!");
+
+        window.location.href="index.html";
+
+    }catch(err){
+        alert(err.message);
+    }
+
+}
+
+</script>
+
+</body>
+</html>
